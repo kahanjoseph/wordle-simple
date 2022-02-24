@@ -65,15 +65,18 @@
 
         Array.from(document.getElementsByClassName('letter-input')).forEach((element)=>{
             if(element.classList.contains('bg-secondary')){
-                regexArray.forEach((elem, index)=>{
-                   if(elem.length > 1) this[index] = this[index].replace(element.value, '');
-                   console.log('')
-                });
+                for(let i=0; i<regexArray.length;i++){
+                    if(regexArray[i].length > 1) regexArray[i] = regexArray[i].replace(element.value, '');
+                }
             }
             if(element.classList.contains('bg-success')){
                 regexArray[element.getAttribute('col')] = element.value;
                 lettersAllowed = lettersAllowed.replace(element.value, '');
-                console.log(lettersAllowed);
+            }
+            if(element.classList.contains('bg-warning')){
+                for(let i=0; i<regexArray.length;i++){
+                    regexArray[element.getAttribute('col')] = regexArray[element.getAttribute('col')].replace(element.value, '')
+                }
             }
             console.log(element.value);
         })
