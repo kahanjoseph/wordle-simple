@@ -1,0 +1,8 @@
+td.keyboard-key {
+    border: 1px solid #d09d49;
+    cursor: pointer;
+    width: 10%;
+    height: 60px;
+    text-align: center;
+    font-size: 21px;
+}
