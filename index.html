@@ -16,7 +16,6 @@
                 <label for="regexInput">REGEX</label>
                 <input type="email" class="form-control" id="regexInput" placeholder="Enter Regex">
             </div>
-            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
         </div>
         <div class="row">
             <p id="resultP"></p>
@@ -25,71 +24,67 @@
     <div class="container" id="inputContainer">
         <div class="row">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="" maxlength="1">
-                <input type="text" class="form-control" placeholder="" maxlength="1">
-                <input type="text" class="form-control" placeholder="" maxlength="1">
-                <input type="text" class="form-control" placeholder="" maxlength="1">
-                <input type="text" class="form-control" placeholder="" maxlength="1">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="0" col="0">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="0" col="1">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="0" col="2">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="0" col="3">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1"  row="0" col="4">
             </div>
         </div>
         <div class="row">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="" maxlength="1">
-                <input type="text" class="form-control" placeholder="" maxlength="1">
-                <input type="text" class="form-control" placeholder="" maxlength="1">
-                <input type="text" class="form-control" placeholder="" maxlength="1">
-                <input type="text" class="form-control" placeholder="" maxlength="1">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="0">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="1">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="2">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="3">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="4">
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-2">
             <button class="btn btn-secondary" id="toggleButton">Toggle</button>
         </div>
+        <div class="row">
+            <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+        </div>
     </div>
-<!--    <table class="m-auto container" id="vk">-->
-<!--        <tbody>-->
-<!--        &lt;!&ndash;tr&ndash;&gt;&lt;!&ndash;    td.kbTitle.text-center(colspan='10')&ndash;&gt;&lt;!&ndash;        | Hebrew Keyboard&ndash;&gt;-->
-<!--        <tr>-->
-<!--            <td class="keyboard-key" data-key="Q">Q</td>-->
-<!--            <td class="keyboard-key" data-key="W">W</td>-->
-<!--            <td class="keyboard-key" data-key="E">E</td>-->
-<!--            <td class="keyboard-key" data-key="R">R</td>-->
-<!--            <td class="keyboard-key" data-key="T">T</td>-->
-<!--            <td class="keyboard-key" data-key="Y">Y</td>-->
-<!--            <td class="keyboard-key" data-key="U">U</td>-->
-<!--            <td class="keyboard-key" data-key="I">I</td>-->
-<!--            <td class="keyboard-key" data-key="O">O</td>-->
-<!--            <td class="keyboard-key" data-key="P">P</td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <td class="keyboard-key" data-key="A">A</td>-->
-<!--            <td class="keyboard-key" data-key="S">S</td>-->
-<!--            <td class="keyboard-key" data-key="D">D</td>-->
-<!--            <td class="keyboard-key" data-key="F">F</td>-->
-<!--            <td class="keyboard-key" data-key="G">G</td>-->
-<!--            <td class="keyboard-key" data-key="H">H</td>-->
-<!--            <td class="keyboard-key" data-key="J">J</td>-->
-<!--            <td class="keyboard-key" data-key="K">K</td>-->
-<!--            <td class="keyboard-key" data-key="L">L</td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <td class="keyboard-key" data-key="Z">Z</td>-->
-<!--            <td class="keyboard-key" data-key="X">X</td>-->
-<!--            <td class="keyboard-key" data-key="C">C</td>-->
-<!--            <td class="keyboard-key" data-key="V">V</td>-->
-<!--            <td class="keyboard-key" data-key="B">B</td>-->
-<!--            <td class="keyboard-key" data-key="N">N</td>-->
-<!--            <td class="keyboard-key" data-key="M">M</td>-->
-<!--            <td class="keyboard-key" data-key="_">BACKSPACE</td>-->
-<!--            <td class="keyboard-key" data-key="toggle" id="togglekey">TOGGLE</td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
 </body>
 <script>
+    let toggled = 0;
+    const wordLength = 5;
+    const txtClass = ['bg-secondary', 'bg-success', 'bg-warning'];
+
     regexInput = document.getElementById("regexInput");
     document.getElementById("submitButton").addEventListener("click", async ()=>{
         let formData = new FormData();
-        formData.append('reg', regexInput.value);
+        let lettersAllowed = '[abcdefghijklmnopqrstuvwxyz]';
+        let regexArray = [];
+        //Create Array Of Regex Spots
+        for (let i = 0; i<wordLength; i++){
+            regexArray.push(lettersAllowed);
+        }
+
+        Array.from(document.getElementsByClassName('letter-input')).forEach((element)=>{
+            if(element.classList.contains('bg-secondary')){
+                regexArray.forEach((elem, index)=>{
+                   if(elem.length > 1) this[index] = this[index].replace(element.value, '');
+                   console.log('')
+                });
+            }
+            if(element.classList.contains('bg-success')){
+                regexArray[element.getAttribute('col')] = element.value;
+                lettersAllowed = lettersAllowed.replace(element.value, '');
+                console.log(lettersAllowed);
+            }
+            console.log(element.value);
+        })
+
+        let regex = '/';
+        regexArray.forEach(reg => {
+            regex += reg;
+        });
+        regex += '/';
+        console.log(regex);
+        formData.append('reg', regex);
         const response = await fetch('getWords.php', {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             body: formData, // body data type must match "Content-Type" header
@@ -110,18 +105,30 @@
         if(event.target.classList.contains('btn-secondary')){
             event.target.classList.remove('btn-secondary');
             event.target.classList.add('btn-success');
+            toggled = 1;
         }else if(event.target.classList.contains('btn-success')){
             event.target.classList.remove('btn-success');
             event.target.classList.add('btn-warning');
+            toggled = 2;
         }else if(event.target.classList.contains('btn-warning')){
             event.target.classList.remove('btn-warning');
             event.target.classList.add('btn-secondary');
+            toggled = 0;
         }
     });
 
     var container = document.getElementById("inputContainer");
+    container.onclick = function (e){
+        if(e.target.type === 'text'){
+            e.target.value = '';
+        }
+    }
     container.onkeyup = function(e) {
         var target = e.srcElement || e.target;
+        for(let i =0; i<txtClass.length; i++){
+            target.classList.remove(txtClass[i]);
+        }
+        target.classList.add(txtClass[toggled]);
         var maxLength = parseInt(target.attributes["maxlength"].value, 10);
         var myLength = target.value.length;
         if (myLength >= maxLength) {
@@ -131,6 +138,7 @@
                     break;
                 if (next.tagName.toLowerCase() === "input") {
                     next.focus();
+                    next.value = '';
                     break;
                 }
             }
