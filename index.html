@@ -128,7 +128,7 @@
                 regex += `(?=.*${spot}.*)`;
             });
         }
-        regex += '/';
+        regex += '/i';
         console.log(regex);
         formData.append('reg', regex);
         const response = await fetch('getWords.php', {
