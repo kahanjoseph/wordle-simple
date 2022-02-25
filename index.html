@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="row mb-2">
-            <button class="btn btn-secondary" id="toggleButton">Toggle Color</button>
+            <button class="btn btn-secondary" id="toggleButton">Toggle</button>
         </div>
         <div class="row">
             <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
@@ -169,13 +169,17 @@
         }
     }
     container.onkeyup = function(e) {
-        let target = e.target;
-        let maxLength = parseInt(target.attributes["maxlength"].value, 10);
-        let myLength = target.value.length;
+        var target = e.target;
+        for(let i =0; i<txtClass.length; i++){
+            target.classList.remove(txtClass[i]);
+        }
+        target.classList.add(txtClass[toggled]);
+        var maxLength = parseInt(target.attributes["maxlength"].value, 10);
+        var myLength = target.value.length;
         if (myLength >= maxLength) {
-            let next = target;
+            var next = target;
             while (next = next.nextElementSibling) {
-                if (next === null)
+                if (next == null)
                     break;
                 if (next.tagName.toLowerCase() === "input") {
                     next.focus();
@@ -186,9 +190,9 @@
         }
         // Move to previous field if empty (user pressed backspace)
         else if (myLength === 0) {
-            let previous = target;
+            var previous = target;
             while (previous = previous.previousElementSibling) {
-                if (previous === null)
+                if (previous == null)
                     break;
                 if (previous.tagName.toLowerCase() === "input") {
                     previous.focus();
