@@ -169,17 +169,13 @@
         }
     }
     container.onkeyup = function(e) {
-        var target = e.srcElement || e.target;
-        for(let i =0; i<txtClass.length; i++){
-            target.classList.remove(txtClass[i]);
-        }
-        target.classList.add(txtClass[toggled]);
-        var maxLength = parseInt(target.attributes["maxlength"].value, 10);
-        var myLength = target.value.length;
+        let target = e.target;
+        let maxLength = parseInt(target.attributes["maxlength"].value, 10);
+        let myLength = target.value.length;
         if (myLength >= maxLength) {
-            var next = target;
+            let next = target;
             while (next = next.nextElementSibling) {
-                if (next == null)
+                if (next === null)
                     break;
                 if (next.tagName.toLowerCase() === "input") {
                     next.focus();
@@ -190,9 +186,9 @@
         }
         // Move to previous field if empty (user pressed backspace)
         else if (myLength === 0) {
-            var previous = target;
+            let previous = target;
             while (previous = previous.previousElementSibling) {
-                if (previous == null)
+                if (previous === null)
                     break;
                 if (previous.tagName.toLowerCase() === "input") {
                     previous.focus();
