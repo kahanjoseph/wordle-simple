@@ -101,21 +101,19 @@
         }
 
         Array.from(document.getElementsByClassName('letter-input')).forEach((element)=>{
+            let elementValue = element.value.toLowerCase();
             if(element.classList.contains('bg-secondary')){
                 for(let i=0; i<regexArray.length;i++){
-                    if(regexArray[i].length > 1) regexArray[i] = regexArray[i].replace(element.value, '');
+                    if(regexArray[i].length > 1) regexArray[i] = regexArray[i].replace(elementValue, '');
                 }
             }
             if(element.classList.contains('bg-success')){
-                regexArray[element.getAttribute('col')] = element.value;
-                lettersAllowed = lettersAllowed.replace(element.value, '');
+                regexArray[element.getAttribute('col')] = elementValue;
             }
             if(element.classList.contains('bg-warning')){
-                    regexArray[element.getAttribute('col')] = regexArray[element.getAttribute('col')].replace(element.value, '');
-                    if(!wrongSpots.includes(element.value)) wrongSpots.push(element.value);
-
+                    regexArray[element.getAttribute('col')] = regexArray[element.getAttribute('col')].replace(elementValue, '');
+                    if(!wrongSpots.includes(elementValue)) wrongSpots.push(elementValue);
             }
-            console.log(element.value);
         })
 
         let regex = '/(?=';
@@ -146,12 +144,6 @@
             paragraph.appendChild(p);
         });
     });
-
-    Array.from(document.getElementsByClassName('letter-input')).forEach((element)=>{
-        element.addEventListener('click', (e)=>{
-            console.log(element.value);
-        });
-    })
 
     document.getElementById("toggleButton").addEventListener('click', (event)=>{
         console.log(event.target);
