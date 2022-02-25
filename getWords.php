@@ -5,7 +5,7 @@ $matches = [];
 
 foreach ($words as $word){
     if (preg_match ($regex, $word, $m))
-        $matches[] = $m[0];
+        $matches[] = $word;
 }
 
 echo json_encode($matches);

@@ -10,17 +10,6 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="form-group">
-                <label for="regexInput">REGEX</label>
-                <input type="email" class="form-control" id="regexInput" placeholder="Enter Regex">
-            </div>
-        </div>
-        <div class="row">
-            <p id="resultP"></p>
-        </div>
-    </div>
     <div class="container" id="inputContainer">
         <div class="row">
             <div class="input-group mb-3">
@@ -40,11 +29,58 @@
                 <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="4">
             </div>
         </div>
+        <div class="row">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="2" col="0">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="2" col="1">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="2" col="2">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="2" col="3">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="2" col="4">
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="3" col="0">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="3" col="1">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="3" col="2">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="3" col="3">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="3" col="4">
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="4" col="0">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="4" col="1">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="4" col="2">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="4" col="3">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="4" col="4">
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="0">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="1">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="2">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="3">
+                <input type="text" class="form-control letter-input" placeholder="" maxlength="1" row="1" col="4">
+            </div>
+        </div>
         <div class="row mb-2">
             <button class="btn btn-secondary" id="toggleButton">Toggle</button>
         </div>
         <div class="row">
             <button type="submit" class="btn btn-primary" id="submitButton">Submit</button>
+        </div>
+    </div>
+    <div class="container">
+        <!--        <div class="row">-->
+        <!--            <div class="form-group">-->
+        <!--                <label for="regexInput">REGEX</label>-->
+        <!--                <input type="email" class="form-control" id="regexInput" placeholder="Enter Regex">-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <div class="row">
+            <p id="resultP"></p>
         </div>
     </div>
 </body>
@@ -58,6 +94,7 @@
         let formData = new FormData();
         let lettersAllowed = '[abcdefghijklmnopqrstuvwxyz]';
         let regexArray = [];
+        let wrongSpots = [];
         //Create Array Of Regex Spots
         for (let i = 0; i<wordLength; i++){
             regexArray.push(lettersAllowed);
@@ -74,17 +111,23 @@
                 lettersAllowed = lettersAllowed.replace(element.value, '');
             }
             if(element.classList.contains('bg-warning')){
-                for(let i=0; i<regexArray.length;i++){
-                    regexArray[element.getAttribute('col')] = regexArray[element.getAttribute('col')].replace(element.value, '')
-                }
+                    regexArray[element.getAttribute('col')] = regexArray[element.getAttribute('col')].replace(element.value, '');
+                    if(!wrongSpots.includes(element.value)) wrongSpots.push(element.value);
+
             }
             console.log(element.value);
         })
 
-        let regex = '/';
+        let regex = '/(?=';
         regexArray.forEach(reg => {
             regex += reg;
         });
+        regex += ')';
+        if (wrongSpots.length){
+            wrongSpots.forEach(spot=>{
+                regex += `(?=.*${spot}.*)`;
+            });
+        }
         regex += '/';
         console.log(regex);
         formData.append('reg', regex);
@@ -92,9 +135,16 @@
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             body: formData, // body data type must match "Content-Type" header
         });
-        let responseJOSN = await response.json();
-        console.log(responseJOSN);
-        document.getElementById('resultP').innerHTML = responseJOSN;
+        let responseJSON = await response.json();
+        console.log(responseJSON);
+        document.getElementById('resultP').innerHTML = '';
+        responseJSON.forEach((elem) =>{
+            let paragraph = document.getElementById("resultP");
+            let text = document.createTextNode(elem);
+            let p = document.createElement("p");
+            p.append(text);
+            paragraph.appendChild(p);
+        });
     });
 
     Array.from(document.getElementsByClassName('letter-input')).forEach((element)=>{
